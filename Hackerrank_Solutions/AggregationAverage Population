@@ -1,0 +1,7 @@
+
+#FLOOR() rounds the result down to the nearest integer.
+
+
+SELECT 
+    FLOOR(AVG(Population)) AS Averagepopulation
+FROM CITY
