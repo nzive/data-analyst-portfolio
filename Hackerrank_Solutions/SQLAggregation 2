@@ -1,0 +1,13 @@
+
+select 
+    ceil(avg(salary)-avg(replace(salary,0,''))) AS ErrorAmount
+from EMPLOYEES;
+
+
+# Explanation:
+# AVG(salary): Computes the average of the salary column in the EMPLOYEES table.
+# REPLACE(salary, 0, ''): Removes the zeros from the salary values, simulating the error in salary calculation.
+# AVG(REPLACE(salary, 0, '')): Computes the average of the modified salaries after zeros have been removed.
+# AVG(salary) - AVG(REPLACE(...)): Calculates the difference between the actual average salary and the miscalculated average salary.
+# CEIL(...): Applies the ceiling function to ensure the result is rounded up to the next integer.
+# AS ErrorAmount: Alias for the result column representing the error amount.
