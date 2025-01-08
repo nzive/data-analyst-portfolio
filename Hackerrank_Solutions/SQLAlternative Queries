@@ -1,0 +1,20 @@
+
+set @number = 0;
+select 
+    repeat('* ', @number := @number + 1) 
+from information_schema.tables 
+limit 20;
+
+
+####
+SET @number = 0;: Initializes a user-defined variable @number to 0.
+SELECT REPEAT(' ', @number := @number + 1) FROM information_schema.tables LIMIT 20;*:
+REPEAT('* ', @number := @number + 1): This function repeats the string '* ' a number of times equal to the current value of @number. 
+After each repetition, @number is incremented by 1 (:= is the assignment operator in MySQL for setting a variable within an expression). 
+This means for each row, the pattern grows by one asterisk and space.
+FROM information_schema.tables: This uses the INFORMATION_SCHEMA.TABLES table, which is a system table that contains metadata about tables in the database. 
+Here, it's used as a source of rows because we don't actually need the data; we just need 20 rows to generate our pattern.
+LIMIT 20: Ensures that only 20 rows are returned, giving us the pattern for 20 lines.
+
+This query will produce a pattern where each line has one more asterisk than the previous one, up to 20 lines, effectively drawing P(20)
+###
