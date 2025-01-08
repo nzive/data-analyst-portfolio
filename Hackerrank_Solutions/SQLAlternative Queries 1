@@ -1,0 +1,24 @@
+
+WITH RECURSIVE Numbers AS (
+    SELECT 2 AS L
+    UNION
+    SELECT L + 1
+    FROM Numbers
+    WHERE L < 1000
+)
+SELECT GROUP_CONCAT(L SEPARATOR '&') AS PrimeNumbers
+FROM Numbers
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Numbers AS N2
+    WHERE N2.L > 1 AND N2.L < Numbers.L AND Numbers.L % N2.L = 0
+) AND L <= 1000;
+
+##
+xplanation:
+WITH RECURSIVE Numbers AS (...): This CTE generates numbers starting from 2 up to 1000.
+GROUP_CONCAT(L SEPARATOR '&') AS PrimeNumbers: Combines the prime numbers into a single output, separated by &.
+NOT EXISTS (...) Subquery: Checks for non-prime numbers by verifying if there are any divisors other than 1 and the number itself within the range.
+AND L <= 1000: Ensures that the query only considers numbers up to 1000 for primality testing.
+Usage:
+This query will list all prime numbers up to 1000, concatenated with & as the separator. If you need a different upper limit, you can replace 1000 with your desired number.##
