@@ -1,0 +1,20 @@
+
+SELECT h.hacker_id, h.name, SUM(s.max_score) as total_score
+FROM Hackers h
+JOIN (
+    SELECT hacker_id, challenge_id, MAX(score) as max_score
+    FROM Submissions
+    GROUP BY hacker_id, challenge_id
+) s ON h.hacker_id = s.hacker_id
+GROUP BY h.hacker_id, h.name
+HAVING SUM(s.max_score) > 0
+ORDER BY total_score DESC, h.hacker_id ASC;
+
+### Explanation:
+The subquery 
+(SELECT hacker_id, challenge_id, MAX(score) as max_score FROM Submissions GROUP BY hacker_id, challenge_id) 
+calculates the maximum score for each challenge by each hacker.
+This subquery is then joined with the Hackers table to correlate names with scores.
+GROUP BY h.hacker_id, h.name groups the results by hackers, allowing us to sum the scores.
+HAVING SUM(s.max_score) > 0 ensures that hackers with a total score of 0 are not included in the result.
+The ORDER BY clause sorts first by total_score in descending order and then by hacker_id in ascending order for ties ###
