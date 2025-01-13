@@ -1,0 +1,94 @@
+SELECT A.Start_Date, MIN(B.End_Date)
+FROM 
+    (SELECT Start_Date
+    FROM Projects
+    WHERE Start_Date NOT IN (SELECT End_Date FROM Projects)) AS A
+    INNER JOIN
+    (SELECT End_Date
+    FROM Projects
+    WHERE End_Date NOT IN (SELECT Start_Date FROM Projects)) AS B
+WHERE A.Start_Date < B.End_Date
+GROUP BY A.Start_Date
+ORDER BY MIN(B.End_Date) - A.Start_Date ASC, A.Start_Date;
+
+
+###### Explanation
+The example describes following four projects:
+
+Project 1: Tasks 1, 2 and 3 are completed on consecutive days, so these are part of the project. Thus start date of project is 2015–10–01 and end date is 2015–10–04, so it took 3 days to complete the project.
+
+Project 2: Tasks 4 and 5 are completed on consecutive days, so these are part of the project. Thus, the start date of project is 2015–10–13 and end date is 2015–10–15, so it took 2 days to complete the project.
+
+Project 3: Only task 6 is part of the project. Thus, the start date of project is 2015–10–28 and end date is 2015–10–29, so it took 1 day to complete the project.
+
+Project 4: Only task 7 is part of the project. Thus, the start date of project is 2015–10–30 and end date is 2015–10–31, so it took 1 day to complete the project.
+
+Full Solution (MySQL)
+SELECT A.Start_Date, MIN(B.End_Date)
+FROM 
+    (SELECT Start_Date
+    FROM Projects
+    WHERE Start_Date NOT IN (SELECT End_Date FROM Projects)) AS A
+    INNER JOIN
+    (SELECT End_Date
+    FROM Projects
+    WHERE End_Date NOT IN (SELECT Start_Date FROM Projects)) AS B
+WHERE A.Start_Date < B.End_Date
+GROUP BY A.Start_Date
+ORDER BY MIN(B.End_Date) - A.Start_Date ASC, A.Start_Date;
+Solution Explanation
+
+Overview of solution parts
+Visualising the problem’s given sample input and explanation:
+
+
+Sample Input from hackerrank with author’s annotations
+Observation: a project’s Start_Date is not in the End_Date column and vice versa.
+
+(1) Obtain projects’ start dates — Table A
+SELECT Start_Date
+FROM Projects
+WHERE Start_Date NOT IN (SELECT End_Date FROM Projects);
+Results:
+
+Results of query (1): Start_Date; 2015–10–01; 2015–10–13; 2015–10–28; 2015–10–30
+Results of query (1)
+(2) Obtain projects’ end dates — Table B
+SELECT End_Date
+FROM Projects
+WHERE End_Date NOT IN (SELECT Start_Date FROM Projects);
+Results:
+
+Results of query (2): End_Date; 2015–10–04; 2015–10–15; 2015–10–29; 2015–10–31
+Results of query (2)
+(3) Match project start dates and end dates — INNER JOIN
+SELECT A.Start_Date, MIN(B.End_Date)
+FROM 
+    (SELECT Start_Date
+    FROM Projects
+    WHERE Start_Date NOT IN (SELECT End_Date FROM Projects)) AS A
+    INNER JOIN
+    (SELECT End_Date
+    FROM Projects
+    WHERE End_Date NOT IN (SELECT Start_Date FROM Projects)) AS B
+WHERE A.Start_Date < B.End_Date
+GROUP BY A.Start_Date;
+Results of the FROM clause, before the SELECT clause. (SQL executes the FROM statement and any related joins before the SELECT statement)
+
+Results of query (3): Start_Date, End_Date; 2015–10–01, 2015–10–04; 2015–10–01, 2015–10–15; 2015–10–01, 2015–10–29; 2015–10–01, 2015–10–31; 2015–10–13, 2015–10–15; 2015–10–13, 2015–10–29; 2015–10–13, 2015–10–31; 2015–10–28, 2015–10–29; 2015–10–28, 2015–10–31; 2015–10–30, 2015–10–31;
+Results of query (3)
+One project’s start date is has many end dates after the join, the correct end date for a particular start date is the minimum (earliest) of the End_Date values that share the same Start_Date.
+
+For example, for Start_Date = 2015-10-01, there are 4 end dates (2015-10-04, 2015-10-15, 2015-10-29, 2015-10-31), the End_Date that corresponds to it is the least (earliest) of the End_Date =2015–10–04. This logic informs the SELECT statement: SELECT A.Start_Date, MIN(B.End_Date) . The GROUP BY clause is to enable the MIN aggregation in the SELECT clause.
+
+(4) Apply required sorting
+ORDER BY MIN(B.End_Date) - A.Start_Date ASC, A.Start_Date;
+The problem requires the results to be sorted first by the number of days to complete the project in ascending order, then, by the start date of the project, presumedly in ascending order as well.
+
+The number of days to complete the project can be calculated with MIN(B.End_Date) - A.Start_Date.
+
+Alternately, DATEDIFF(MIN(B.End_Date), A.Start_Date) can be used to calculate the number of days required to complete each project.
+
+Results:
+
+Results of query (4): 2015–10–28; 2015–10–29; 2015–10–30; 2015–10–31; 2015–10–13; 2015–10–15; 2015–10–01; 2015–10–04
