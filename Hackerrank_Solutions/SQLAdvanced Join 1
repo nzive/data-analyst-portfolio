@@ -1,0 +1,20 @@
+SELECT s.Name
+FROM Students s
+JOIN Friends f ON s.ID = f.ID
+JOIN Packages p1 ON s.ID = p1.ID
+JOIN Packages p2 ON f.Friend_ID = p2.ID
+WHERE p2.Salary > p1.Salary
+ORDER BY p2.Salary;
+
+Explanation:
+Joining Tables:
+We start by joining Students with Friends on ID to link students with their best friends.
+Then, we join Packages twice:
+p1 is for the student's own salary (s.ID = p1.ID).
+p2 is for the friend's salary (f.Friend_ID = p2.ID).
+Condition for Higher Salary:
+The WHERE clause checks if the friend's salary (p2.Salary) is greater than the student's salary (p1.Salary).
+Output and Sorting:
+We select the Name from the Students table for those who meet the condition.
+The results are ordered by the friend's salary (p2.Salary) in ascending order, which ensures the names are listed by the salary amount offered to the best friends.
+
