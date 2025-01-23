@@ -1,0 +1,9 @@
+
+set @rows = 21;
+select
+    repeat('* ', @rows := @rows-1) AS Pattern
+from 
+    information_schema.tables
+
+##The space (' ') after the asterisk ('*') is crucial because the REPEAT function produces repeated characters or strings. 
+Without the space, the stars will all stick together, creating a single long, dense line of asterisks instead of the desired spaced-out pattern.
