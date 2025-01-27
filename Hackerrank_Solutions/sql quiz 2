@@ -1,0 +1,5 @@
+
+SELECT 
+  product_ID
+FROM Products
+WHERE low_fats = 'Y' AND recyclable ='Y';
