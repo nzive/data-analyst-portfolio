@@ -1,7 +1,13 @@
 
 SELECT *
-from employees
-WHERE (
+FROM Employees
+WHERE Salary = (
   SELECT
-  MAX(Salary) FROM employees
+  MAX(Salary) FROM Employees
 );
+
+##Explanation
+The SQL query above consists of two parts:
+
+The subquery (SELECT MAX(Salary) FROM Employee) computes the maximum salary from the Employee table.
+The main query SELECT * FROM Employee WHERE Salary = ... selects the rows from the Employee table where the salary equals the maximum salary computed by the subquery##
