@@ -1,0 +1,18 @@
+## Write your MySQL query statement below
+  
+SELECT 
+    tt.id
+FROM Weather as tt
+LEFT JOIN Weather as yt on tt.recordDate = DATE_ADD(yt.recordDate, INTERVAL 1 DAY)
+WHERE tt.temperature > yt.temperature;
+
+
+
+## What is DATE_ADD?
+DATE_ADD is a MySQL function that adds a specified time interval to a date. It takes two arguments:
+
+A date: In this case, yt.recordDate (the date from the yt alias, which represents "yesterday's table").
+
+An interval: In this case, INTERVAL 1 DAY, which means "add 1 day to the date."
+
+The result of DATE_ADD(yt.recordDate, INTERVAL 1 DAY) is a new date that is exactly one day after yt.recordDate.##
