@@ -1,0 +1,10 @@
+# Write your MySQL query statement below
+SELECT 
+    CASE
+      WHEN eu.unique_id is NULL THEN NULL
+      ELSE eu.unique_id
+    END AS unique_id,
+    e.name
+FROM Employees e
+LEFT JOIN EmployeeUNI eu ON e.id = eu.id;
+
