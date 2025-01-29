@@ -1,0 +1,38 @@
+# Write your MySQL query statement below
+SELECT
+    machine_id,
+    ROUND(AVG(end_time - start_time),3) AS processing_time
+FROM (
+    SELECT 
+        machine_id,
+        process_id,
+        MAX(CASE WHEN activity_type = "start" THEN timestamp END) AS start_time,
+        MAX(CASE WHEN activity_type = "end" THEN timestamp END) AS end_time
+    FROM Activity
+    GROUP BY machine_id, process_id
+    ) AS Process_time
+GROUP BY machine_id;
+
+
+Explanation:
+1. Subquery:
+The subquery calculates the start_time and end_time for each (machine_id, process_id) pair.
+It uses the CASE statement to extract the start and end timestamps:
+MAX(CASE WHEN activity_type = 'start' THEN timestamp END) AS start_time: This extracts the start timestamp for each process.
+MAX(CASE WHEN activity_type = 'end' THEN timestamp END) AS end_time: This extracts the end timestamp for each process.
+The GROUP BY machine_id, process_id ensures that we get one row per (machine_id, process_id) pair.
+  
+  Why Use MAX?
+The MAX function is used here as a workaround to pivot the data. Here's why:
+Grouping:
+We are grouping the data by machine_id and process_id using GROUP BY machine_id, process_id.
+After grouping, each group contains two rows: one for start and one for end.
+Extracting Specific Values:
+We want to extract the timestamp for the start activity type and the timestamp for the end activity type.
+Since we are grouping, we need a way to aggregate the timestamp values for each group.
+Using MAX:
+The MAX function is used to select the non-NULL value from the CASE statement.
+For each group:
+When activity_type = 'start', the CASE statement returns the timestamp for the start row.
+When activity_type = 'end', the CASE statement returns NULL for the start row.
+Since MAX ignores NULL values, it will return the timestamp for the start row.
