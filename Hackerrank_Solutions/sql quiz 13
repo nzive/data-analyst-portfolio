@@ -1,0 +1,21 @@
+# Write your MySQL query statement below
+SELECT 
+    s.user_id,
+    COALESCE(ROUND(COUNT(CASE WHEN action = "confirmed" THEN 1 END) / COUNT(c.action), 2),0) AS confirmation_rate
+FROM Signups s
+LEFT JOIN Confirmations c ON s.user_id = c.user_id
+GROUP BY s.user_id 
+
+## EXPLANATION
+COUNT(CASE WHEN c.action = 'confirmed' THEN 1 END):
+This counts only the rows where action = 'confirmed'.
+COUNT(c.action):
+This counts the total number of actions (including confirmed, timeout, etc.) for each user.
+ROUND(..., 2):
+This rounds the confirmation rate to 2 decimal places.
+LEFT JOIN:
+A LEFT JOIN ensures that all users from the Signups table are included, even if they have no confirmations. This handles cases where a user has no actions in the Confirmations table.
+Grouping:
+The GROUP BY s.user_id ensures that the calculation is done for each user.
+Handling Nulls:
+If a user has no confirmations, COUNT(c.action) will be 0, and the division will result in NULL. To handle this, you can use COALESCE to replace NULL with 0.
