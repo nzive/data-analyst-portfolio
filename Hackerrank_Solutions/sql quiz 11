@@ -1,0 +1,30 @@
+SELECT
+    s.student_id,
+    s.student_name,
+    su.subject_name,
+    COUNT(e.student_id) AS attended_exams
+FROM
+    Students s
+CROSS JOIN
+    Subjects su
+LEFT JOIN
+    Examinations e ON s.student_id = e.student_id AND su.subject_name = e.subject_name
+GROUP BY
+    s.student_id, s.student_name, su.subject_name
+ORDER BY
+    s.student_id, su.subject_name;
+
+
+###  Explanation:
+CROSS JOIN:
+The CROSS JOIN between Students and Subjects ensures that every student is paired with every subject, even if they haven't taken an exam in that subject.
+LEFT JOIN:
+The LEFT JOIN with the Examinations table ensures that attendance records are included only if they exist. If a student hasn't taken an exam in a particular subject, the attended_exams count will be 0.
+Join Condition:
+The LEFT JOIN condition includes both s.student_id = e.student_id and su.subject_name = e.subject_name. This ensures that the join is performed correctly for both student and subject.
+COUNT(e.student_id):
+The COUNT(e.student_id) counts only the rows where there is a matching record in the Examinations table. If no exam record exists for a student-subject pair, the count will be 0.
+GROUP BY:
+The GROUP BY clause groups the results by student_id, student_name, and subject_name to ensure proper aggregation.
+ORDER BY:
+The results are ordered by student_id and subject_name as required.
