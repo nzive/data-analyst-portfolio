@@ -1,0 +1,22 @@
+# Write your MySQL query statement below
+SELECT 
+    m.name AS name
+FROM Employee e
+JOIN Employee m ON e.managerId = m.id
+GROUP BY m.id, m.name
+HAVING COUNT(*) >= 5
+
+
+
+##Self-Join:
+Employee e represents the employees.
+Employee m represents the managers.
+The join condition e.managerId = m.id ensures that we map each employee to their manager.
+Group by Manager:
+We group by m.id and m.name to count the number of direct reports for each manager.
+Count Direct Reports:
+COUNT(*) counts the number of direct reports for each manager.
+Filter with HAVING:
+The HAVING COUNT(*) >= 5 clause ensures that only managers with at least 5 direct reports are included.
+Select Manager's Name:
+We select the name of the manager from the m table.
