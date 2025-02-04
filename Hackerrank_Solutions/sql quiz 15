@@ -1,0 +1,17 @@
+# Write your MySQL query statement below
+SELECT 
+    us.product_id,
+   COALESCE(ROUND(SUM(p.price * us.units) / SUM(us.units), 2), 0) AS average_price
+FROM Prices p
+LEFT JOIN Unitssold us ON P.product_id = us.product_id
+AND us.purchase_date BETWEEN P.start_date  AND P.end_date  
+GROUP BY us.product_id
+
+##
+Steps to Solve:
+Join the Prices and UnitsSold tables on product_id and ensure that the purchase_date falls within the start_date and end_date range.
+Calculate the total revenue for each product by multiplying the price by the units sold.
+Sum the total revenue and total units sold for each product.
+Calculate the average price by dividing the total revenue by the total units sold.
+Round the average price to 2 decimal places.
+Handle products with no sales by using a LEFT JOIN and setting their average price to 0.
