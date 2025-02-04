@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+SELECT 
+    id,
+    movie, description, rating
+FROM Cinema
+WHERE description != "boring"
+AND id % 2 = 1
+ORDER BY rating DESC 
+
+
+## Explanation:
+WHERE id % 2 = 1:
+This condition ensures that only rows with odd-numbered IDs are selected. The modulus operator % checks if the remainder of id divided by 2 is 1, which indicates an odd number.
