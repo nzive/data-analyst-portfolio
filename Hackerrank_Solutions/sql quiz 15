@@ -17,4 +17,4 @@ Round the average price to 2 decimal places.
 Handle products with no sales by using a LEFT JOIN and setting their average price to 0.
 
 ##LEFT JOIN:
-We use a LEFT JOIN to ensure that all products from the Prices table are included, even if they have no sales in the UnitsSold table.
+We use a LEFT JOIN to ensure that all products from the Prices table are included, even if they have no sales in the UnitsSold table..
