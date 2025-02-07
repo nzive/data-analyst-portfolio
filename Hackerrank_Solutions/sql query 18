@@ -1,0 +1,18 @@
+# Write your MySQL query statement below
+SELECT
+    query_name,
+    ROUND (AVG(rating / position), 2) AS quality,
+    ROUND(
+        (COUNT(CASE WHEN rating < 3 THEN 1 END) * 100.0) / COUNT(*),
+         2) AS poor_query_performance
+FROM Queries
+GROUP BY query_name
+
+  ####
+What This Query Does:
+ROUND(AVG(rating / position), 2) AS quality:
+Computes the average of rating / position, rounded to 2 decimal places.
+ROUND((COUNT(CASE WHEN rating < 3 THEN 1 END) * 100.0) / COUNT(*), 2) AS poor_average_performance:
+Counts how many records have rating < 3 (poor performance).
+Divides that by the total count to get the percentage of poor ratings.
+Rounds to 2 decimal places.
