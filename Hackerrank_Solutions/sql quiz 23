@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+SELECT 
+    Activity_date AS day,
+    COUNT(DISTINCT user_id) AS active_users
+FROM Activity
+WHERE Activity_date BETWEEN DATE_SUB('2019-07-27', INTERVAL 29 DAY) AND '2019-07-27'
+GROUP BY Activity_date
+
+##
+  DATE_SUB('2019-07-27', INTERVAL 29 DAY) calculates the start date of the range (30 days before 2019-07-27).
+  '2019-07-27' is the end date of the range.
+  The AND '2019-07-27' in the SQL query is part of the BETWEEN clause, which specifies the upper bound of the date range. Here's a breakdown of how it works:
