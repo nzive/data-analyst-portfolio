@@ -1,0 +1,17 @@
+# Write your MySQL query statement below
+SELECT 
+    MAX(num) AS num
+FROM (
+    SELECT
+        num
+    FROM MyNumbers
+    GROUP BY num
+    HAVING COUNT(num) =1
+) AS single_number
+
+##
+Subquery:
+The subquery groups the numbers by num and filters groups where the count of num is exactly 1 (i.e., numbers that appear only once).
+The result of the subquery is a list of numbers that occur only once.
+Outer Query:
+The outer query selects the maximum number (MAX(num)) from the list of single-occurrence numbers returned by the subquery.
