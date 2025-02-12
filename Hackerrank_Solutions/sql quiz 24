@@ -1,0 +1,27 @@
+# Write your MySQL query statement below
+SELECT
+    s.product_id,
+    s.year AS first_year,
+    s.quantity,
+    s.price
+FROM Sales s
+JOIN (
+    SELECT
+        product_id,
+        MIN(year) AS first_year
+    FROM Sales
+    GROUP BY product_id
+) AS first_year_sales
+
+ON s.product_id = first_year_sales.product_id AND s.year = first_year_sales.first_year;
+
+##\Subquery (first_sales):
+The subquery calculates the first year (MIN(year)) each product was sold.
+It groups the results by product_id to ensure we get the first year for each product.
+The result of this subquery is a temporary table (first_year_sales) with columns product_id and first_year.
+Main Query:
+The main query joins the Sales table (s) with the first_sales subquery.
+The join condition ensures that we only select rows from the Sales table where:
+The product_id matches.
+The year matches the first_year calculated in the subquery.
+The selected columns are product_id, year (renamed as first_year), quantity, and price.
