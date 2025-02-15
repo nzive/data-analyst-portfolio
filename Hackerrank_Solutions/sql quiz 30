@@ -1,0 +1,23 @@
+# Write your MySQL query statement below
+SELECT
+    employee_id,
+    department_id
+FROM Employee
+WHERE primary_flag = 'Y'
+
+UNION
+
+SELECT
+    employee_id,
+    department_id
+FROM Employee
+GROUP BY employee_id
+HAVING COUNT(*) = 1;
+
+##
+First Part (WHERE primary_flag = 'Y'):
+This selects all employees who have explicitly marked a department as their primary department (primary_flag = 'Y').
+Second Part (GROUP BY employee_id HAVING COUNT(*) = 1):
+This selects employees who belong to only one department. Since they have only one department, it is automatically their primary department, regardless of the primary_flag.
+UNION:
+Combines the results from both parts. UNION automatically removes duplicates, so there's no risk of duplicate rows.
