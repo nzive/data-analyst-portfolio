@@ -1,0 +1,16 @@
+# Write your MySQL query statement below
+SELECT 
+    DISTINCT num AS ConsecutiveNums
+FROM (
+    SELECT 
+        num, 
+        LEAD(num, 1) OVER (ORDER BY id) AS next_num,
+        LEAD(num, 2) OVER (ORDER BY id) AS next_next_num
+    FROM logs
+) temp
+WHERE num = next_num AND next_next_num;
+
+##
+LEAD(num, 1) → Checks the next row's num.
+LEAD(num, 2) → Checks the row after next.
+WHERE num = next_num AND num = next_next_num → Ensures three consecutive occurrences.
