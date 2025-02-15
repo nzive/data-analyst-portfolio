@@ -1,0 +1,28 @@
+# Write your MySQL query statement below
+SELECT
+    m.employee_id,
+    m.name,
+    COUNT(e.employee_id) AS reports_count,
+    ROUND(AVG(e.age), 0) AS average_age
+FROM
+    Employees m
+JOIN
+    Employees e ON m.employee_id = e.reports_to
+GROUP BY
+    m.employee_id, m.name
+ORDER BY
+    m.employee_id;
+
+##
+Self-Join:
+The Employees table is joined with itself:
+m represents managers.
+e represents direct reports.
+The join condition m.employee_id = e.reports_to ensures that we are matching managers with their direct reports.
+Aggregation:
+COUNT(e.employee_id) counts the number of direct reports for each manager.
+ROUND(AVG(e.age), 0) calculates the average age of the direct reports and rounds it to the nearest integer.
+Grouping:
+The results are grouped by the manager's employee_id and name to ensure proper aggregation.
+Ordering:
+The final result is ordered by employee_id.
