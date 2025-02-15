@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+SELECT 
+    x,
+    y,
+    z,
+    CASE WHEN x + y > z AND x + z > y AND z + y > x THEN 'Yes' ELSE 'No' END AS triangle
+FROM Triangle
+
+##
+To determine if the values of three columns x, y, and z can form a triangle, you can use the triangle inequality theorem. 
+According to this theorem, for three lengths to form a triangle, the sum of any two sides must be greater than the third side. In other words, the following conditions must be true:
+x+y>z
+x+z>y
+y+z>x
+If all three conditions are satisfied, the values of x, y, and z can form a triangle.
