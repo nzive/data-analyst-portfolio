@@ -1,0 +1,23 @@
+WITH changedprices AS(
+    SELECT 
+        product_id,
+        new_price,
+        change_date,
+        ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY change_date DESC) AS rn
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+)
+
+SELECT
+    DISTINCT p. product_id,
+    COALESCE(cp.new_price, 10) AS price
+FROM Products p
+LEFT JOIN changedprices cp ON p.product_id = cp.product_id AND cp.rn = 1
+
+##
+The CTE changedprices calculates the latest price change for each product on or before 2019-08-16.
+ROW_NUMBER() is used to assign a unique rank (rn) to each price change for a product, ordered by change_date in descending order. 
+This ensures that the most recent price change gets rn = 1.
+The main query selects all distinct product_ids from the Products table.
+It performs a LEFT JOIN with the LatestPriceChange CTE to get the latest price (new_price) for each product where rn = 1 (most recent price change).
+COALESCE(lpc.new_price, 10) ensures that if there is no price change recorded for a product on or before 2019-08-16, the price defaults to 10.
