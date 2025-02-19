@@ -1,0 +1,24 @@
+# Write your MySQL query statement below
+SELECT 
+    person_name
+FROM (
+    SELECT 
+        person_name,
+        weight,
+        turn,
+        SUM(weight) OVER (ORDER BY turn) AS total_weight
+    FROM Queue
+) AS subquery
+WHERE total_weight <= 1000
+ORDER BY turn DESC
+LIMIT 1;
+
+##
+Subquery with SUM() and OVER():
+The SUM(weight) OVER (ORDER BY turn) calculates the running total of weights ordered by turn.
+This gives us a cumulative sum for each row.
+Filtering with WHERE:
+The outer query filters rows where the running_total is less than or equal to 1000.
+Ordering and Limiting:
+The ORDER BY turn DESC ensures that the last person in the queue (with the highest turn) is selected.
+The LIMIT 1 ensures only one row (the last person) is returned.
