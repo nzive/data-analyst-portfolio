@@ -1,0 +1,39 @@
+WITH ratings as (
+    SELECT 
+        u.name,
+        COUNT(movie_id) AS NumberofRatings
+    FROM MovieRating mt
+    JOIN users u ON mt.user_id = u.user_id
+    GROUP BY u.name
+),
+LargestRatings AS (
+
+    SELECT 
+        name
+    FROM ratings
+    ORDER BY NumberofRatings DESC, name ASC
+    LIMIT 1
+),
+MovieAverage AS (
+    SELECT 
+        m.title,
+        AVG(rating) AS AverageRating
+    FROM MovieRating mr 
+    JOIN Movies m on mr.movie_id = m.movie_id
+    WHERE created_at BETWEEN '2020-02-01' AND '2020-02-29'
+    GROUP BY m.title
+),
+HighestAverage AS (
+    SELECT
+        title
+    FROM MovieAverage
+    ORDER BY AverageRating DESC, title ASC
+    LIMIT 1
+
+)
+
+SELECT name AS results 
+FROM LargestRatings
+UNION ALL
+SELECT title AS results 
+FROM HighestAverage;
